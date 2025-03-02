@@ -1,14 +1,24 @@
+import { useState } from 'react'
+
 function App() {
-  //sample ipc
-  const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+  const [editor, setEditor] = useState('')
+
+  window.electron.ipcRenderer.on('file-content', (event, data) => {
+    setEditor(data)
+  })
+
+  const handleChange = (e) => {
+    setEditor(e.target.value)
+  }
 
   return (
     <>
-      <div>
-        <p>Hello, World</p>
-        <button className="bg-slate-600 py-4 px-8 rounded-lg text-white" onClick={ipcHandle}>
-          Ping
-        </button>
+      <div className="flex gap-2">
+        <textarea
+          className="min-h-dvh w-dvw bg-[#151520] text-white focus:outline-none resize-none"
+          value={editor}
+          onChange={handleChange}
+        ></textarea>
       </div>
     </>
   )

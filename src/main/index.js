@@ -1,6 +1,8 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+
+let currentFile = null
 
 function createWindow() {
   // Create the browser window.
@@ -25,6 +27,70 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'New',
+          click: () => {
+            //resets the current file and sends a IPC message to the renderer process
+            currentFile = null
+            mainWindow.webContents.send('file-content', '')
+          }
+        },
+        {
+          label: 'Open',
+          click: async () => {
+            //shows a dialog to open a txt file
+            const result = await dialog.showOpenDialog(mainWindow, {
+              properties: ['openFile'],
+              filters: [{ name: 'Text Files', extensions: ['txt'] }]
+            })
+
+            //ensures that a file is selected or not canceled and sent to the renderer
+            if (!result.canceled && result.filePaths.length > 0) {
+              const content = fs.readFileSync(result.filePaths[0], 'utf-8')
+
+              currentFile = result.filePaths[0]
+
+              mainWindow.webContents.send('file-content', content)
+            }
+          }
+        },
+        {
+          label: 'Save',
+          click: async () => {
+            if (currentFile) {
+              //takes the value of the editor element in the DOM
+              const content = await mainWindow.webContents.executeJavaScript(
+                'document.getElementById("editor").value'
+              )
+
+              //writes the content to the current file
+              fs.writeFileSync(currentFile, content)
+            } else {
+              const result = await dialog.showSaveDialog(mainWindow, {
+                filters: [{ name: 'Text Files', extensions: ['txt'] }]
+              })
+
+              if (!result.canceled && result.filePath) {
+                const content = await mainWindow.webContents.executeJavaScript(
+                  'document.getElementById("editor").value'
+                )
+
+                fs.writeFileSync(result.filePath, content)
+                currentFile = result.filePath
+              }
+            }
+          }
+        }
+      ]
+    }
+  ])
+
+  Menu.setApplicationMenu(menu)
 }
 
 // This method will be called when Electron has finished
@@ -40,9 +106,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
 
   createWindow()
 
