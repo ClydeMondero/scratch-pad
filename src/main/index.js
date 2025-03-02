@@ -63,28 +63,7 @@ function createWindow() {
         {
           label: 'Save',
           click: async () => {
-            if (currentFile) {
-              //takes the value of the editor element in the DOM
-              const content = await mainWindow.webContents.executeJavaScript(
-                'document.getElementById("editor").value'
-              )
-
-              //writes the content to the current file
-              fs.writeFileSync(currentFile, content)
-            } else {
-              const result = await dialog.showSaveDialog(mainWindow, {
-                filters: [{ name: 'Text Files', extensions: ['txt'] }]
-              })
-
-              if (!result.canceled && result.filePath) {
-                const content = await mainWindow.webContents.executeJavaScript(
-                  'document.getElementById("editor").value'
-                )
-
-                fs.writeFileSync(result.filePath, content)
-                currentFile = result.filePath
-              }
-            }
+            mainWindow.webContents.send('request-editor-content')
           }
         }
       ]
@@ -92,6 +71,23 @@ function createWindow() {
   ])
 
   Menu.setApplicationMenu(menu)
+
+  ipcMain.once('response-editor-content', async (event, content) => {
+    if (currentFile) {
+      //writes the content to the current file
+      fs.writeFileSync(currentFile, content)
+    } else {
+      const result = await dialog.showSaveDialog(mainWindow, {
+        filters: [{ name: 'Text Files', extensions: ['txt'] }]
+      })
+
+      if (!result.canceled && result.filePath) {
+        fs.writeFileSync(result.filePath, content)
+
+        currentFile = result.filePath
+      }
+    }
+  })
 }
 
 // This method will be called when Electron has finished
