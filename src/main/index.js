@@ -29,48 +29,49 @@ function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 
-  const menu = Menu.buildFromTemplate([
-    {
-      label: 'File',
-      submenu: [
-        {
-          label: 'New',
-          click: () => {
-            //resets the current file and sends a IPC message to the renderer process
-            currentFile = null
-            mainWindow.webContents.send('file-content', '')
-          }
-        },
-        {
-          label: 'Open',
-          click: async () => {
-            //shows a dialog to open a txt file
-            const result = await dialog.showOpenDialog(mainWindow, {
-              properties: ['openFile'],
-              filters: [{ name: 'Text Files', extensions: ['txt'] }]
-            })
+  // const menu = Menu.buildFromTemplate([
+  //   {
+  //     label: 'File',
+  //     submenu: [
+  //       {
+  //         label: 'New',
+  //         click: () => {
+  //           //resets the current file and sends a IPC message to the renderer process
+  //           currentFile = null
+  //           mainWindow.webContents.send('file-content', '')
+  //         }
+  //       },
+  //       {
+  //         label: 'Open',
+  //         click: async () => {
+  //           //shows a dialog to open a txt file
+  //           const result = await dialog.showOpenDialog(mainWindow, {
+  //             properties: ['openFile'],
+  //             filters: [{ name: 'Text Files', extensions: ['txt'] }]
+  //           })
 
-            //ensures that a file is selected or not canceled and sent to the renderer
-            if (!result.canceled && result.filePaths.length > 0) {
-              const content = fs.readFileSync(result.filePaths[0], 'utf-8')
+  //           //ensures that a file is selected or not canceled and sent to the renderer
+  //           if (!result.canceled && result.filePaths.length > 0) {
+  //             const content = fs.readFileSync(result.filePaths[0], 'utf-8')
 
-              currentFile = result.filePaths[0]
+  //             currentFile = result.filePaths[0]
 
-              mainWindow.webContents.send('file-content', content)
-            }
-          }
-        },
-        {
-          label: 'Save',
-          click: async () => {
-            mainWindow.webContents.send('request-editor-content')
-          }
-        }
-      ]
-    }
-  ])
+  //             mainWindow.webContents.send('file-content', content)
+  //           }
+  //         }
+  //       },
+  //       {
+  //         label: 'Save',
+  //         click: async () => {
+  //           mainWindow.webContents.send('request-editor-content')
+  //         }
+  //       }
+  //     ]
+  //   }
+  // ])
 
-  Menu.setApplicationMenu(menu)
+  // Menu.setApplicationMenu(menu)
+  Menu.setApplicationMenu(null)
 
   ipcMain.once('response-editor-content', async (event, content) => {
     if (currentFile) {
