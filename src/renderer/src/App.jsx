@@ -44,7 +44,7 @@ function App() {
       caret: '#F4DBD6', // Rosewater
       selection: '#F4DBD633', // Transparent Rosewater
       selectionMatch: '#F4DBD633',
-      lineHighlight: '#2a2d3b', // Overlay0
+      lineHighlight: '#232333', // Overlay0
       gutterBackground: '#1e1e2e', // Base
       gutterForeground: '#A5ADCB' // Subtext1
     },

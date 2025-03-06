@@ -8,44 +8,155 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* Markdown Heading Styles */
+/* 🌙 Catppuccin Mocha Theme */
+:root {
+  --ctp-text: #cdd6f4;
+  --ctp-subtext: #bac2de;
+  --ctp-blue: #89b4fa;
+  --ctp-lavender: #b4befe;
+  --ctp-green: #a6e3a1;
+  --ctp-yellow: #f9e2af;
+  --ctp-peach: #fab387;
+  --ctp-red: #f38ba8;
+  --ctp-mauve: #cba6f7;
+  --ctp-overlay: #313244;
+  --ctp-surface: #1e1e2e;
+}
+
+/* 📝 Markdown Typography */
+body {
+  font-family: 'Fira Code', monospace;
+  background: var(--ctp-surface);
+  color: var(--ctp-text);
+  line-height: 1.6;
+}
+
+/* 🏷 Headings */
 h1 {
-  font-size: 2rem; /* 32px */
+  font-size: 2rem;
   font-weight: bold;
-  margin: 1.5rem 0;
-  border-bottom: 2px solid #ccc;
+  color: var(--ctp-blue);
+  border-bottom: 2px solid var(--ctp-blue);
   padding-bottom: 0.3rem;
+  margin-bottom: 1rem;
 }
 
 h2 {
-  font-size: 1.75rem; /* 28px */
+  font-size: 1.75rem;
   font-weight: bold;
-  margin: 1.3rem 0;
-  border-bottom: 1px solid #ccc;
+  color: var(--ctp-lavender);
+  border-bottom: 1px solid var(--ctp-lavender);
   padding-bottom: 0.3rem;
 }
 
 h3 {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
   font-weight: bold;
-  margin: 1.2rem 0;
+  color: var(--ctp-green);
 }
 
 h4 {
-  font-size: 1.25rem; /* 20px */
+  font-size: 1.25rem;
   font-weight: bold;
-  margin: 1rem 0;
+  color: var(--ctp-yellow);
 }
 
 h5 {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
   font-weight: bold;
-  margin: 0.8rem 0;
+  color: var(--ctp-peach);
 }
 
 h6 {
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
   font-weight: bold;
-  margin: 0.7rem 0;
-  color: #666; /* Slightly faded */
+  color: var(--ctp-red);
+  opacity: 0.8;
+}
+
+/* 🛑 Bold & Italic */
+strong {
+  font-weight: bold;
+  color: var(--ctp-mauve);
+}
+
+em {
+  font-style: italic;
+  color: var(--ctp-peach);
+}
+
+/* 🔗 Links */
+a {
+  color: var(--ctp-blue);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 💬 Blockquotes */
+blockquote {
+  border-left: 4px solid var(--ctp-overlay);
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  background: var(--ctp-surface);
+  color: var(--ctp-subtext);
+  font-style: italic;
+}
+
+/* 📜 Lists */
+ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+}
+
+/* 📝 Code Blocks */
+pre {
+  background: var(--ctp-overlay);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+code {
+  font-family: 'Fira Code', monospace;
+  color: var(--ctp-mauve);
+}
+
+pre code {
+  color: var(--ctp-text);
+}
+
+/* 🔲 Inline Code */
+p code {
+  background: var(--ctp-overlay);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* 📊 Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+th,
+td {
+  border: 1px solid var(--ctp-overlay);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+th {
+  background: var(--ctp-overlay);
+  color: var(--ctp-text);
 }
