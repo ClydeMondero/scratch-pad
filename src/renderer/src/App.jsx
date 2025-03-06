@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useCodeMirror } from '@uiw/react-codemirror'
+import { useCodeMirror, basicSetup } from '@uiw/react-codemirror'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { languages } from '@codemirror/language-data'
 import { createTheme } from '@uiw/codemirror-themes'
@@ -11,8 +11,31 @@ import { EditorView } from '@codemirror/view'
 
 function App() {
   const editorRef = useRef(null)
-  const [isPreview, setIsPreview] = useState(false)
-  const [text, setText] = useState('')
+  const [isPreview, setIsPreview] = useState(true)
+  const [isInitial, setIsInitial] = useState(true)
+
+  const initialText = `# 📝 Scratch Pad – A No-Nonsense Notepad with Vim & Markdown
+
+Ever needed a quick place to **jot down thoughts**, **fix up text**, or **edit markdown**?
+Scratch Pad is your **lightweight, no-frills** text editor, blending the **simplicity of Notepad** with the **power of Vim**.
+
+## ✨ Features
+- ✅ **Fast & Minimal** – Just open it and start typing. No clutter. No distractions.
+- ✅ **Vim Keybindings** – Because real editing starts with \`hjkl\`.
+- ✅ **Markdown Preview** – Hit \`Ctrl + E\` to toggle preview mode.
+- ✅ **Autosave? Nah.** – It's a scratch pad. You control when and what to save.
+- ✅ **Dark Mode?** Of course.
+
+## 🚀 How to Use
+1. **Type freely** – Treat it like Notepad, but better.
+2. **Need formatting?** Write in Markdown.
+3. **Toggle between Preview mode and Edit Mode?** Press \`Ctrl + E\`.
+4. **Exit like a pro?** \`:q!\` (just kidding, you can close it normally).
+
+> Give it a spin and start editing like a boss! 🔥
+`
+
+  const [text, setText] = useState(initialText)
 
   // const ipcRenderer = window.electron.ipcRenderer
 
@@ -22,9 +45,11 @@ function App() {
     lineNumbersRelative,
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
+        setIsInitial(false)
         setText(update.state.doc.toString())
       }
-    })
+    }),
+    EditorView.lineWrapping
   ]
 
   const textExtensions = [lineNumbersRelative, EditorView.editable.of(false)]
@@ -32,6 +57,10 @@ function App() {
   const [extensions, setExtensions] = useState(markdownExtensions)
 
   function togglePreview() {
+    if (isInitial) {
+      setText('')
+    }
+
     setIsPreview(!isPreview)
   }
 
@@ -85,12 +114,12 @@ function App() {
     <div>
       {isPreview ? (
         <div
-          className="text-lg text-white p-4"
+          className="text-lg text-white py-1 px-10"
           dangerouslySetInnerHTML={{ __html: marked(text) }}
         ></div>
       ) : (
         <div
-          className="text-lg"
+          className={`text-lg `}
           ref={editorRef} // Assign ref instead of state
         ></div>
       )}

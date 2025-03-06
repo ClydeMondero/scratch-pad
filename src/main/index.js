@@ -14,6 +14,8 @@ function createWindow() {
     width: 900,
     height: 670,
     show: false,
+    title: 'Scratch Pad', // Set window title
+    icon: join(__dirname, '../../resources/icon.png'), // Fix the path
     webPreferences: {
       /**
        * Preload script that has access to Node.js and Electron APIs.
