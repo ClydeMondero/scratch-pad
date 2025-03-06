@@ -7,3 +7,45 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
+/* Markdown Heading Styles */
+h1 {
+  font-size: 2rem; /* 32px */
+  font-weight: bold;
+  margin: 1.5rem 0;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.3rem;
+}
+
+h2 {
+  font-size: 1.75rem; /* 28px */
+  font-weight: bold;
+  margin: 1.3rem 0;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.3rem;
+}
+
+h3 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: bold;
+  margin: 1.2rem 0;
+}
+
+h4 {
+  font-size: 1.25rem; /* 20px */
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+h5 {
+  font-size: 1rem; /* 16px */
+  font-weight: bold;
+  margin: 0.8rem 0;
+}
+
+h6 {
+  font-size: 0.875rem; /* 14px */
+  font-weight: bold;
+  margin: 0.7rem 0;
+  color: #666; /* Slightly faded */
+}

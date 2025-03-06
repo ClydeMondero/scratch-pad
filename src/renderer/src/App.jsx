@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { languages } from '@codemirror/language-data'
@@ -6,55 +6,74 @@ import { createTheme } from '@uiw/codemirror-themes'
 import { tags as t } from '@lezer/highlight'
 import { vim } from '@replit/codemirror-vim'
 import { lineNumbersRelative } from '@uiw/codemirror-extensions-line-numbers-relative'
-
-const extensions = [
-  markdown({ base: markdownLanguage, codeLanguages: languages }),
-  vim(),
-  lineNumbersRelative
-]
-
-const myCatppuccinTheme = createTheme({
-  theme: 'dark', // Catppuccin is typically a dark theme
-  settings: {
-    background: '#1e1e2e', // Base
-    backgroundImage: '',
-    foreground: '#CAD3F5', // Text
-    caret: '#F4DBD6', // Rosewater
-    selection: '#F4DBD633', // Transparent Rosewater
-    selectionMatch: '#F4DBD633',
-    lineHighlight: '#2a2d3b', // Overlay0
-    gutterBackground: '#1e1e2e', // Base
-    gutterForeground: '#A5ADCB' // Subtext1
-  },
-  styles: []
-})
+import { marked } from 'marked'
+import { EditorView } from '@codemirror/view'
 
 function App() {
   const editorRef = useRef(null)
-  const ipcRenderer = window.electron.ipcRenderer
+  const [isPreview, setIsPreview] = useState(false)
+  const [text, setText] = useState('')
 
-  const { setContainer } = useCodeMirror({
+  // const ipcRenderer = window.electron.ipcRenderer
+
+  const markdownExtensions = [
+    markdown({ base: markdownLanguage, codeLanguages: languages }),
+    vim(),
+    lineNumbersRelative,
+    EditorView.updateListener.of((update) => {
+      if (update.docChanged) {
+        setText(update.state.doc.toString())
+      }
+    })
+  ]
+
+  const textExtensions = [lineNumbersRelative, EditorView.editable.of(false)]
+
+  const [extensions, setExtensions] = useState(markdownExtensions)
+
+  function togglePreview() {
+    setIsPreview(!isPreview)
+  }
+
+  const myCatppuccinTheme = createTheme({
+    theme: 'dark', // Catppuccin is typically a dark theme
+    settings: {
+      background: '#1e1e2e', // Base
+      backgroundImage: '',
+      foreground: '#CAD3F5', // Text
+      caret: '#F4DBD6', // Rosewater
+      selection: '#F4DBD633', // Transparent Rosewater
+      selectionMatch: '#F4DBD633',
+      lineHighlight: '#2a2d3b', // Overlay0
+      gutterBackground: '#1e1e2e', // Base
+      gutterForeground: '#A5ADCB' // Subtext1
+    },
+    styles: []
+  })
+
+  const { setContainer, view } = useCodeMirror({
     container: editorRef.current,
-    extensions,
-    value: '',
+    extensions: extensions,
+    value: text,
     theme: myCatppuccinTheme
   })
 
   useEffect(() => {
-    // ipcRenderer.on('file-content', (event, data) => {
-    //   if (editorRef.current) {
-    //     editorRef.current.value = data
-    //   }
-    // })
-    // ipcRenderer.once('request-editor-content', () => {
-    //   if (editorRef.current) {
-    //     ipcRenderer.send('response-editor-content', editorRef.current.value)
-    //   }
-    // })
-    // return () => {
-    //   ipcRenderer.removeAllListeners('file-content')
-    // }
-  }, [])
+    if (isPreview) {
+      setExtensions(textExtensions)
+    } else {
+      setExtensions(markdownExtensions)
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'e') {
+        event.preventDefault()
+        togglePreview()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isPreview])
 
   useEffect(() => {
     if (editorRef.current) {
@@ -64,11 +83,17 @@ function App() {
 
   return (
     <div>
-      <div
-        className="text-lg"
-        ref={editorRef} // Assign ref instead of state
-        // className="min-h-dvh w-dvw bg-[#151520] text-white focus:outline-none resize-none"
-      ></div>
+      {isPreview ? (
+        <div
+          className="text-lg text-white p-4"
+          dangerouslySetInnerHTML={{ __html: marked(text) }}
+        ></div>
+      ) : (
+        <div
+          className="text-lg"
+          ref={editorRef} // Assign ref instead of state
+        ></div>
+      )}
     </div>
   )
 }

@@ -28,6 +28,7 @@
     "@uiw/codemirror-extensions-line-numbers-relative": "^4.23.9",
     "@uiw/codemirror-themes": "^4.23.9",
     "@uiw/react-codemirror": "^4.23.9",
+    "marked": "^15.0.7",
     "tailwindcss": "^4.0.9"
   },
   "devDependencies": {
