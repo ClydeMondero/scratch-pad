@@ -175,7 +175,7 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
             bringBackTool,
             bringForwardTool
           ]}
-          shouldSelectAfterCreate={true}
+          shouldSelectAfterCreate={false}
           styleComponents={{
             color: { order: 3, component: ColorStyle },
             background: { order: 4, component: BackgroundStyle },
