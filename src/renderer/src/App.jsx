@@ -4,7 +4,7 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { languages } from '@codemirror/language-data'
 import { createTheme } from '@uiw/codemirror-themes'
 import { tags as t } from '@lezer/highlight'
-import { vim } from '@replit/codemirror-vim'
+import { vim, Vim } from '@replit/codemirror-vim'
 import { lineNumbersRelative } from '@uiw/codemirror-extensions-line-numbers-relative'
 import { marked } from 'marked'
 import { EditorView } from '@codemirror/view'
@@ -42,7 +42,6 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
     lineNumbersRelative,
     EditorView.updateListener.of((update) => {
       if (update.docChanged) {
-        setIsInitial(false)
         setText(update.state.doc.toString())
       }
     }),
@@ -55,6 +54,7 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
 
   function togglePreview() {
     if (isInitial) {
+      setIsInitial(false)
       setText('')
     }
 
@@ -106,6 +106,13 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
       setContainer(editorRef.current)
     }
   }, [editorRef.current])
+
+  useEffect(() => {
+    if (Vim) {
+      Vim.defineAction('toggle-preview', togglePreview)
+      Vim.mapCommand('<C-e>', 'action', 'togglePreview', {})
+    }
+  }, [Vim])
 
   return (
     <div>

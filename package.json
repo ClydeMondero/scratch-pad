@@ -1,7 +1,7 @@
 {
-  "name": "vim-notepad-react",
+  "name": "scratchpad",
   "version": "1.0.0",
-  "description": "An Electron application with React",
+  "description": "is a No-Nonsense Notepad with Vim & Markdown",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
