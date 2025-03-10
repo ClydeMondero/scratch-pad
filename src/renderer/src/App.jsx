@@ -16,23 +16,20 @@ function App() {
 
   const initialText = `# 📝 Scratch Pad – A No-Nonsense Notepad with Vim & Markdown
 
-Ever needed a quick place to **jot down thoughts**, **fix up text**, or **edit markdown**?
-Scratch Pad is your **lightweight, no-frills** text editor, blending the **simplicity of Notepad** with the **power of Vim**.
+Need a quick, **distraction-free** space to **jot down thoughts** or **tweak text**? Scratch Pad combines **Notepad’s simplicity** with **Vim’s power**—plus **Markdown support**!
 
 ## ✨ Features
-- ✅ **Fast & Minimal** – Just open it and start typing. No clutter. No distractions.
-- ✅ **Vim Keybindings** – Because real editing starts with \`hjkl\`.
-- ✅ **Markdown Preview** – Hit \`Ctrl + E\` to toggle preview mode.
-- ✅ **Autosave? Nah.** – It's a scratch pad. You control when and what to save.
-- ✅ **Dark Mode?** Of course.
+- **Just type** – Open it and go. No setup, no fluff.
+- **Vim Keybindings** – Navigate with \`hjkl\` like a pro.
+- **Markdown Preview** – Hit \`Ctrl + E\` to toggle.
 
 ## 🚀 How to Use
-1. **Type freely** – Treat it like Notepad, but better.
-2. **Need formatting?** Write in Markdown.
-3. **Toggle between Preview mode and Edit Mode?** Press \`Ctrl + E\`.
-4. **Exit like a pro?** \`:q!\` (just kidding, you can close it normally).
+1. **Start typing** – No need to configure anything.
+2. **Use Markdown** for formatting (optional).
+3. **Press \`Ctrl + E\`** to preview.
+4. **Exit like a pro?** \:q!\ (just kidding, you can close it normally).
 
-> Give it a spin and start editing like a boss! 🔥
+> Scratch. Edit. Move on.
 `
 
   const [text, setText] = useState(initialText)
