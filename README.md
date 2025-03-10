@@ -15,11 +15,11 @@ npm run build:win
 ```
 
 ## Features  
-- ✅ **Just type** – Open it and go. No setup, no fluff.  
-- ✅ **Vim Keybindings** – Navigate with \`hjkl\` like a pro.  
-- ✅ **Markdown Preview** – Hit \`Ctrl + E\` to toggle.  
-- ✅ **Your text, your rules** – No autosave. You decide.  
-- ✅ **Dark Mode?** Of course.  
+- **Just type** – Open it and go. No setup, no fluff.  
+- **Vim Keybindings** – Navigate with \`hjkl\` like a pro.  
+- **Markdown Preview** – Hit \`Ctrl + E\` to toggle.  
+- **Your text, your rules** – No autosave. You decide.  
+- **Dark Mode?** Of course.  
 
 ## How to Use  
 1. **Start typing** – No need to configure anything.  
