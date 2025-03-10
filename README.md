@@ -31,3 +31,6 @@ npm run build:win
 
 ## Roadmap
 - Sketch Pad Mode
+- Tabs
+- Open and Save File
+- Auto Format Code
