@@ -22,6 +22,7 @@
     "@codemirror/language-data": "^6.5.1",
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^4.0.0",
+    "@jzohdi/react-draw": "^0.9.29",
     "@lezer/highlight": "^1.2.1",
     "@replit/codemirror-vim": "^6.2.1",
     "@tailwindcss/vite": "^4.0.9",

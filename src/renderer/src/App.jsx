@@ -8,13 +8,38 @@ import { vim, Vim } from '@replit/codemirror-vim'
 import { lineNumbersRelative } from '@uiw/codemirror-extensions-line-numbers-relative'
 import { marked } from 'marked'
 import { EditorView } from '@codemirror/view'
+import {
+  ReactDraw,
+  circleTool,
+  squareTool,
+  selectTool,
+  freeDrawTool,
+  diamondTool,
+  straightLineTool,
+  textAreaTool,
+  eraseTool,
+  undoTool,
+  redoTool,
+  trashTool,
+  duplicateTool,
+  bringBackTool,
+  bringForwardTool,
+  ColorStyle,
+  BackgroundStyle,
+  LineWidthStyle,
+  OpacityStyle,
+  arrowTool,
+  ClearAllButton,
+  FontSizeStyle
+} from '@jzohdi/react-draw'
 
 function App() {
   const editorRef = useRef(null)
   const [isPreview, setIsPreview] = useState(true)
+  const [isSketch, setIsSketch] = useState(true)
   const [isInitial, setIsInitial] = useState(true)
 
-  const initialText = `# 📝 Scratch Pad – A No-Nonsense Notepad with Vim & Markdown
+  const initialText = `# 📝 Scratch Pad – A No-Nonsense Notepad/Sketchpad with Vim & Markdown
 
 Need a quick, **distraction-free** space to **jot down thoughts** or **tweak text**? Scratch Pad combines **Notepad’s simplicity** with **Vim’s power**—plus **Markdown support**!
 
@@ -22,12 +47,14 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
 - **Just type** – Open it and go. No setup, no fluff.
 - **Vim Keybindings** – Navigate with \`hjkl\` like a pro.
 - **Markdown Preview** – Hit \`Ctrl + E\` to toggle.
+- **Sketch Mode** – Hit \`Ctrl + M\` to toggle between typing and drawing.
 
 ## 🚀 How to Use
 1. **Start typing** – No need to configure anything.
 2. **Use Markdown** for formatting (optional).
-3. **Press \`Ctrl + E\`** to preview.
-4. **Exit like a pro?** \:q!\ (just kidding, you can close it normally).
+3. **Press \`Ctrl + E\`** to preview/edit.
+4. **Press \`Ctrl + M\`** to type/draw.
+5. **Exit like a pro?** \:q!\ (just kidding, you can close it normally).
 
 > Scratch. Edit. Move on.
 `
@@ -59,6 +86,10 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
     }
 
     setIsPreview(!isPreview)
+  }
+
+  function toggleMode() {
+    setIsSketch(!isSketch)
   }
 
   const myCatppuccinTheme = createTheme({
@@ -96,10 +127,15 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
         event.preventDefault()
         togglePreview()
       }
+
+      if (event.ctrlKey && event.key === 'm') {
+        event.preventDefault()
+        toggleMode()
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isPreview])
+  }, [isPreview, isSketch])
 
   useEffect(() => {
     if (editorRef.current) {
@@ -111,12 +147,48 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
     if (Vim) {
       Vim.defineAction('toggle-preview', togglePreview)
       Vim.mapCommand('<C-e>', 'action', 'togglePreview', {})
+      Vim.defineAction('toggle-mode', toggleMode)
+      Vim.mapCommand('<C-m>', 'action', 'toggleMode', {})
     }
   }, [Vim])
 
   return (
     <div>
-      {isPreview ? (
+      {isSketch ? (
+        <ReactDraw
+          drawingTools={[
+            selectTool,
+            freeDrawTool,
+            squareTool,
+            circleTool,
+            diamondTool,
+            straightLineTool,
+            textAreaTool,
+            arrowTool,
+            eraseTool
+          ]}
+          actionTools={[
+            undoTool,
+            redoTool,
+            trashTool,
+            duplicateTool,
+            bringBackTool,
+            bringForwardTool
+          ]}
+          shouldSelectAfterCreate={true}
+          styleComponents={{
+            color: { order: 3, component: ColorStyle },
+            background: { order: 4, component: BackgroundStyle },
+            lineWidth: { order: 1, component: LineWidthStyle },
+            opacity: { order: 0, component: OpacityStyle },
+            fontSize: { order: 2, component: FontSizeStyle }
+          }}
+          menuComponents={[ClearAllButton]}
+          layout="fit"
+        >
+          <div className="h-dvh w-dvw bg-white"></div>
+        </ReactDraw>
+      ) : isPreview ? (
         <div
           className="text-lg text-white py-1 px-10"
           dangerouslySetInnerHTML={{ __html: marked(text) }}
