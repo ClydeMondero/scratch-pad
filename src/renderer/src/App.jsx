@@ -36,7 +36,7 @@ import {
 function App() {
   const editorRef = useRef(null)
   const [isPreview, setIsPreview] = useState(true)
-  const [isSketch, setIsSketch] = useState(true)
+  const [isSketch, setIsSketch] = useState(false)
   const [isInitial, setIsInitial] = useState(true)
 
   const initialText = `# 📝 Scratch Pad – A No-Nonsense Notepad/Sketchpad with Vim & Markdown
