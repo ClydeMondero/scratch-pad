@@ -14,6 +14,9 @@ Use the package manager npm.
 ```bash
 npm run build:win 
 ```
+or
+
+Download the zip file in [Realeses Page](https://github.com/ClydeMondero/scratch-pad/releases)
 
 ## Features  
 - **Just type** – Open it and go. No setup, no fluff.
