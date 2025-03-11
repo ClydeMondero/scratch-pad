@@ -3,7 +3,6 @@
 is a **No-Nonsense Notepad/Sketch** with **Vim** & **Markdown** 
 
 ## Demo
-![Image 1](https://i.imgur.com/BarY37F.png)
 ![Image 2](https://i.imgur.com/RK8Wzmr.png)
 ![Image 3](https://i.imgur.com/ZQFZfUj.png)
 ![Image 4](https://i.imgur.com/5x1RIzt.png)
@@ -27,13 +26,13 @@ npm run build:win
 2. **Use Markdown** for formatting (optional).  
 3. Press Ctrl + E to preview/edit.
 4. Press Ctrl + M to type/draw.
+5. Press Ctrl + Shift + V to vim/normal.
 5. Exit like a pro? :q! (just kidding, you can close it normally) 
 
 > Scratch. Edit. Move on. 🚀  
 
 ## Roadmap
 - Persistent Storage
-- Vim Mode Toggle
 - Tabs
 - Open and Save File
 - Auto Format Code
