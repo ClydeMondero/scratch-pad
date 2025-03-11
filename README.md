@@ -33,6 +33,7 @@ npm run build:win
 
 ## Roadmap
 - Persistent Storage
+- Vim Mode Toggle
 - Tabs
 - Open and Save File
 - Auto Format Code
