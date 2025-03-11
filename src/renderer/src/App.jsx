@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useDebugValue, useEffect, useRef, useState } from 'react'
 import { useCodeMirror, basicSetup } from '@uiw/react-codemirror'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { languages } from '@codemirror/language-data'
@@ -38,6 +38,7 @@ function App() {
   const [isPreview, setIsPreview] = useState(true)
   const [isSketch, setIsSketch] = useState(false)
   const [isInitial, setIsInitial] = useState(true)
+  const [isVimEnabled, setIsVimEnabled] = useState(false)
 
   const initialText = `# 📝 Scratch Pad – A No-Nonsense Notepad/Sketchpad with Vim & Markdown
 
@@ -75,9 +76,20 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
     EditorView.lineWrapping
   ]
 
+  const markdownNoVimExtensions = [
+    markdown({ base: markdownLanguage, codeLanguages: languages }),
+    lineNumbersRelative,
+    EditorView.updateListener.of((update) => {
+      if (update.docChanged) {
+        setText(update.state.doc.toString())
+      }
+    }),
+    EditorView.lineWrapping
+  ]
+
   const textExtensions = [lineNumbersRelative, EditorView.editable.of(false)]
 
-  const [extensions, setExtensions] = useState(markdownExtensions)
+  const [extensions, setExtensions] = useState(markdownNoVimExtensions)
 
   function togglePreview() {
     if (isInitial) {
@@ -90,6 +102,10 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
 
   function toggleMode() {
     setIsSketch(!isSketch)
+  }
+
+  function toggleVim() {
+    setIsVimEnabled(!isVimEnabled)
   }
 
   const myCatppuccinTheme = createTheme({
@@ -118,8 +134,12 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
   useEffect(() => {
     if (isPreview) {
       setExtensions(textExtensions)
-    } else {
+    }
+
+    if (isVimEnabled) {
       setExtensions(markdownExtensions)
+    } else {
+      setExtensions(markdownNoVimExtensions)
     }
 
     const handleKeyDown = (event) => {
@@ -132,10 +152,15 @@ Need a quick, **distraction-free** space to **jot down thoughts** or **tweak tex
         event.preventDefault()
         toggleMode()
       }
+
+      if (event.ctrlKey && event.shiftKey && event.key === 'V') {
+        event.preventDefault()
+        toggleVim()
+      }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isPreview, isSketch])
+  }, [isPreview, isSketch, isVimEnabled])
 
   useEffect(() => {
     if (editorRef.current) {
